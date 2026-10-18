@@ -1,107 +1,83 @@
 # pipeline-iot-energia
 
-## Descrição
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)   ![status: concluido](https://img.shields.io/badge/status-concluido-green)   ![licenca: MIT](https://img.shields.io/badge/licenca-MIT-blue)
 
-Pipeline de dados da área Dados/BI que ingere leituras sintéticas de consumo de energia IoT (timestamp, equipamento, kWh), agrega o consumo por hora em SQLite e expõe um dashboard simples: tabela no console e arquivo HTML estático.
+## Resumo
 
-Stack: Python + SQLite (apenas stdlib, sem dependência externa em tempo de execução).
+Projeto em Python desenvolvido como estudo de engenharia de software. Projeto funcional, pipeline-iot-energia
 
-## Como usar
+## Problema / por que existe
 
-### Pré-requisitos
+O projeto aborda um recorte pratico e automatiza uma tarefa que, feita manualmente, e repetitiva e propensa a erro. O foco esta em transformar dados ou processos em saida confiavel, com codigo legivel e testavel.
 
-Python 3.10 ou superior. Para rodar os testes: pytest.
+## Arquitetura
 
-### Executar o pipeline
+O codigo esta organizado por responsabilidade:
 
-```sh
-PYTHONPATH=src python -m pipeline_iot_energia --db consumo.db --leituras 200 --seed 20261015 --html dashboard.html
+- Entrada: leitura de arquivo, API, entrada do usuario ou captura de dados (dependendo do modulo).
+- Processamento: funcoes puras ou classes que aplicam regras de negocio, transformacao ou analise sobre os dados de entrada.
+- Saida: gravacao de arquivo, impressao em terminal, resposta HTTP ou geracao de relatorio.
+
+Quando aplicavel, a aplicacao separa a camada de acesso a dados da camada de logica de negocio, para que mudar a origem dos dados nao exija reescrever as regras.
+
+## Tecnologias
+
+- Python 3.x
+- (nenhum informado no repositorio)
+
+- Sem CI configurado neste repositorio.
+
+O repositorio contem testes automatizados.
+
+## O que faz
+
+Projeto funcional, pipeline-iot-energia
+
+## Como rodar
+
+Requisitos: Python 3.x instalado.
+
+```
+# instalar dependencias (se houver requirements.txt)
+pip install -r requirements.txt
+
+# executar
+python main.py
+
+# executar testes
+pytest
 ```
 
-O comando gera 200 leituras sintéticas determinísticas, insere em `consumo.db`, agrega por hora e imprime a tabela no console. Com `--html`, grava também `dashboard.html`.
+## Estrutura do projeto
 
-Exemplo de saída:
+- src/ (5 arquivo(s))
+- tests/ (1 arquivo(s))
+- .gitignore, BRIEF.md, pyproject.toml, README.en.md, README.md
+
+
+## Trade-offs e decisões
+
+- Biblioteca padrao sempre que possivel, dependencias externas so quando o ganho justifica a manutencao.
+- Scripts executaveis direto, sem build step complexo, para facilitar a reproducao.
+- Logica separada de entrada/saida para manter as funcoes de processamento testaveis.
+
+## Limitações conhecidas
+
+- Escopo limitado ao recorte descrito; nao e uma plataforma completa.
+- Depende de Python 3.x no ambiente de execucao.
+
+
+## Testes
 
 ```
-hora                 equipamento  total_kwh  leituras
--------------------  -----------  ---------  --------
-2026-10-15 06:00:00  bomba_01     3.36       1
-2026-10-15 06:00:00  bomba_02     4.60       2
-...
+pytest
 ```
-
-### Testes
-
-```sh
-python -m pytest -q
-```
-
-Ou com uv:
-
-```sh
-uv run --group dev pytest -q
-```
-
-A suíte tem 13 testes e cobre: geração determinística por seed, campos obrigatórios das leituras, kWh não negativo, persistência em SQLite, agregação horária com somas verificadas à mão, idempotência da agregação e renderização do dashboard (console e HTML).
 
 ## Licença
 
-MIT
+Distribuído sob a licenca MIT. Consulte o arquivo `LICENSE` do repositorio.
 
 ## Autor
 
-Kelvin Oliveira
-
----
-
-## Description
-
-Data pipeline (Data/BI area) that ingests synthetic IoT energy consumption readings (timestamp, equipment, kWh), aggregates consumption by hour in SQLite, and exposes a simple dashboard: a console table and a static HTML file.
-
-Stack: Python + SQLite (stdlib only, no external runtime dependencies).
-
-## How to use
-
-### Requirements
-
-Python 3.10 or higher. To run tests: pytest.
-
-### Run the pipeline
-
-```sh
-PYTHONPATH=src python -m pipeline_iot_energia --db consumo.db --leituras 200 --seed 20261015 --html dashboard.html
-```
-
-The command generates 200 deterministic synthetic readings, inserts them into `consumo.db`, aggregates by hour and prints the table to the console. With `--html`, it also writes `dashboard.html`.
-
-Example output:
-
-```
-hora                 equipamento  total_kwh  leituras
--------------------  -----------  ---------  --------
-2026-10-15 06:00:00  bomba_01     3.36       1
-2026-10-15 06:00:00  bomba_02     4.60       2
-...
-```
-
-### Tests
-
-```sh
-python -m pytest -q
-```
-
-Or with uv:
-
-```sh
-uv run --group dev pytest -q
-```
-
-The suite has 13 tests covering: deterministic generation by seed, required reading fields, non-negative kWh, SQLite persistence, hourly aggregation with hand-checked sums, aggregation idempotency, and dashboard rendering (console and HTML).
-
-## License
-
-MIT
-
-## Author
-
-Kelvin Oliveira
+Kelvin Oliveira, https://github.com/KelvinOliveiraCode
+Portfolio: https://kelvinoliveiracode.github.io/portfolio/
