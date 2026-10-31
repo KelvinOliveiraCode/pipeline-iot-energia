@@ -1,118 +1,103 @@
 # pipeline-iot-energia
 
-<div align="center">
-
 **English** · [Português (Brasil)](README.md)
 
-</div>
-
-[![Python 3](https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/) [![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat-square&logo=scikit-learn)](https://scikit-learn.org/) [![pandas](https://img.shields.io/badge/pandas-150458?style=flat-square&logo=pandas)](https://pandas.pydata.org/) [![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=flat-square&logo=pytest)](https://docs.pytest.org/) [![MIT License](https://img.shields.io/badge/License-MIT-f4c430?style=flat-square)](LICENSE)
-
-### Projeto funcional ,  pipeline-iot-energia
-
----
+[![Python 3](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](#) [![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite)](#) [![pytest](https://img.shields.io/badge/pytest-13%20tests-0A9EDC?style=flat-square&logo=pytest)](#) [![MIT License](https://img.shields.io/badge/License-MIT-f4c430?style=flat-square)](LICENSE)
 
 ## What it is
 
-Projeto funcional ,  pipeline-iot-energia
+An **IoT energy data pipeline**: it generates simulated sensor consumption readings (with a fixed seed → deterministic), **ingests them into SQLite**, **aggregates by hour** and produces a **dashboard** in the console or as HTML. It is an educational data-pipeline lab in pure Python (stdlib + SQLite), with no external dependencies.
 
----
+## Status
 
-## Quick Start
+An educational data lab, working and tested (13 tests).
 
-```bash
-# Clone and enter
-git clone https://github.com/KelvinOliveiraCode/<repo>.git
-cd <repo>
+## Features
 
-# Install dependencies
-# No requirements.txt detected
+- **Deterministic reading generation** (`generate_readings`): energy sensors, reading count, fixed `--seed` (20261015 default).
+- **SQLite ingestion** (`ingest.py`): writes readings into a local database (default `data/pipeline.db`).
+- **Hourly aggregation** (`aggregate_hourly`): consolidates consumption per hour.
+- **Dashboard**: a console table (`print_console`) and HTML rendering (`render_html`).
+- **CLI** `pipeline-iot-energia`: `--db`, `--leituras`, `--seed`, `--start`, `--html`.
 
-# Run the project
-python main.py
+## Architecture
 
-# Run tests
-pytest
+A `pipeline_iot_energia` package with three stages: `ingest` (generate + write), `aggregate` (consolidate by hour) and `dashboard` (console/HTML). Orchestrated by `__main__.py`.
+
+```mermaid
+flowchart LR
+    GEN[generate_readings - readings] --> ING[ingest - SQLite]
+    ING --> AGG[aggregate_hourly]
+    AGG --> CON[console_table - stdout]
+    AGG --> HTML[render_html - HTML file]
 ```
 
-## How it works
+## Stack
 
-Estrutura limpa e modular com separação de responsabilidades.
+- Python ≥ 3.10, stdlib only (sqlite3, argparse)
+- pytest (dev)
 
----
+## Repository layout
 
-## Capabilities
+```
+pipeline-iot-energia/
+├── pyproject.toml · BRIEF.md
+├── src/pipeline_iot_energia/
+│   ├── ingest.py      # generates readings, writes to SQLite
+│   ├── aggregate.py   # aggregates consumption by hour
+│   ├── dashboard.py   # console + HTML
+│   └── __main__.py    # CLI
+├── tests/test_pipeline.py
+└── LICENSE           # MIT
+```
 
-| Capacidade | Descrição |
-|------------|-------------|
-| Carregamento de Dados | Auto-download do TensorFlow creditcard.csv (284k transações) com cache local |
-| EDA e Visualização | Distribuição de classes, histogramas de Amount, heatmaps de correlação (matplotlib/seaborn) |
-| Pré-processamento | RobustScaler em Amount/Time, split estratificado, remoção de duplicatas |
-| Balanceamento | SMOTE oversampling (fallback: class_weight="balanced") |
-| Modelagem | LogisticRegression, RandomForest, ExtraTrees com RandomizedSearchCV (StratifiedKFold) |
-| Métricas | Accuracy, Precision, Recall, F1, ROC AUC, Specificity, Confusion Matrix |
-| Seleção | Score ponderado: Recall 40% + F1 30% + Precision 20% + Accuracy 10% |
-| Persistência | Serialização joblib para modelo, scaler e resultados completos |
+## Prerequisites and installation
 
+Python ≥ 3.10.
 
----
+```bash
+pip install -e .
+```
 
+## How to run
 
+```bash
+# full pipeline: generate, ingest, aggregate and print to console
+pipeline-iot-energia --leituras 200 --seed 20261015
 
----
+# also generate an HTML dashboard
+pipeline-iot-energia --html dashboard.html
+```
 
-## FAQ
+## Tests and quality
 
-<details>
-<summary><strong>What is this project?</strong></summary>
+Real command (verified by the agent):
 
-A Python study/project demonstrating core concepts.
+```bash
+python -m pytest tests/
+# 13 passed
+```
 
-</details>
+There is no CI configured in this repository.
 
-<details>
-<summary><strong>How do I run it?</strong></summary>
+## Technical decisions and trade-offs
 
-See [Quick Start](#quick-start) for copy-paste commands.
+- **SQLite instead of a heavy database/collector**: simple, local and dependency-free; right for a lab.
+- **Seed-based deterministic readings**: reproducible; the cost is they are not from real sensors.
+- **Hourly aggregation in pure Python**: transparent and light.
 
-</details>
+## Known limitations and roadmap
 
-<details>
-<summary><strong>Are there tests?</strong></summary>
+- The readings are synthetic (simulated), not from real devices.
+- The dashboard is static (console/generated HTML); no interactive charts or streaming.
+- No web server; HTML is generated as a file.
 
-No automated tests in this repository.
+## Development process
 
-</details>
+An individual project by Kelvin Oliveira, built with orchestrated AI agents and reviewed by the author. The pipeline, the aggregation and the review are the author's.
 
-<details>
-<summary><strong>Can I use this in production?</strong></summary>
+## License and author
 
-This is a **study/portfolio project**. Review and harden (auth, persistence, monitoring, etc.) before production use.
+MIT — Copyright (c) 2026 Kelvin Rebelo de Oliveira.
 
-</details>
-
-
-
----
-
-## Documentation
-
-- **Source Code** ,  Browse the `src/` directory for implementation details
-- **API Reference** ,  Inline docstrings + type hints
-- **Architecture Diagram** ,  See [architecture.mermaid](docs/architecture.mermaid) (if present)
-- **Changelog** ,  [CHANGELOG.md](CHANGELOG.md) (if present)
-- **Contributing** ,  [CONTRIBUTING.md](CONTRIBUTING.md) (if present)
-
-## License
-
-[MIT](LICENSE) ,  Kelvin Oliveira
-
----
-
-<div align="center">
-
-**Built with** · Python 3 + scikit-learn + pandas
-
-**Author** · [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfolio](https://kelvinoliveiracode.github.io/portfolio/)
-
-</div>
+**Author**: [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfolio](https://kelvinoliveiracode.github.io/portfolio/)
