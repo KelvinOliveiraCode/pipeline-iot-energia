@@ -17,7 +17,7 @@ An educational data lab, working and tested (13 tests).
 - **Deterministic reading generation** (`generate_readings`): energy sensors, reading count, fixed `--seed` (20261015 default).
 - **SQLite ingestion** (`ingest.py`): writes readings into a local database (default `data/pipeline.db`).
 - **Hourly aggregation** (`aggregate_hourly`): consolidates consumption per hour.
-- **Dashboard**: a console table (`print_console`) and HTML rendering (`render_html`).
+- Dashboard: a console table (`print_console`) and HTML rendering (`render_html`).
 - **CLI** `pipeline-iot-energia`: `--db`, `--leituras`, `--seed`, `--start`, `--html`.
 
 ## Architecture
@@ -39,7 +39,7 @@ flowchart LR
 
 ## Repository layout
 
-```
+```text
 pipeline-iot-energia/
 ├── pyproject.toml · BRIEF.md
 ├── src/pipeline_iot_energia/
@@ -82,9 +82,9 @@ There is no CI configured in this repository.
 
 ## Technical decisions and trade-offs
 
-- **SQLite instead of a heavy database/collector**: simple, local and dependency-free; right for a lab.
-- **Seed-based deterministic readings**: reproducible; the cost is they are not from real sensors.
-- **Hourly aggregation in pure Python**: transparent and light.
+- SQLite instead of a heavy database/collector: simple, local and dependency-free; right for a lab.
+- Seed-based deterministic readings: reproducible; the cost is they are not from real sensors.
+- Hourly aggregation in pure Python: transparent and light.
 
 ## Known limitations and roadmap
 
@@ -98,6 +98,6 @@ An individual project by Kelvin Oliveira, built with orchestrated AI agents and 
 
 ## License and author
 
-MIT — Copyright (c) 2026 Kelvin Rebelo de Oliveira.
+MIT. Copyright (c) 2026 Kelvin Rebelo de Oliveira.
 
 **Author**: [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfolio](https://kelvinoliveiracode.github.io/portfolio/)
